@@ -1,13 +1,12 @@
 const bcrypt = require('bcrypt')
 const pool = require('../config/db')
-const generateToken = require('../utilits/generateToken')
-const jwt = require('jsonwebtoken')
+const generateToken = require('../utilits/generateToken') // убедись, что путь правильный
 
 class AuthController {
     async register(req, res) {
-        const { full_name, username, email, password_hash } = req.body
+        const { full_name, username, email, password } = req.body
 
-        if (!full_name || !username || !email || !password_hash) {
+        if (!full_name || !username || !email || !password) {
             return res.status(400).json({ error: 'Деректер толық емес' })
         }
 
@@ -22,7 +21,7 @@ class AuthController {
                 return res.status(409).json({ error: 'Бұл логин бұрын алынған' })
             }
 
-            const hashedPassword = await bcrypt.hash(password_hash, 10)
+            const hashedPassword = await bcrypt.hash(password, 10)
 
             const result = await pool.query(
                 'INSERT INTO users (full_name, username, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING id, full_name, username, email',
@@ -39,9 +38,9 @@ class AuthController {
     }
 
     async login(req, res) {
-        const { username, password_hash } = req.body
+        const { username, password } = req.body
 
-        if (!username || !password_hash) {
+        if (!username || !password) {
             return res.status(400).json({ error: 'Деректер толық емес' })
         }
 
@@ -53,17 +52,13 @@ class AuthController {
                 return res.status(404).json({ error: 'Пайдаланушы табылмады' })
             }
 
-            const isMatch = await bcrypt.compare(password_hash, user.password_hash)
+            const isMatch = await bcrypt.compare(password, user.password_hash)
 
             if (!isMatch) {
                 return res.status(401).json({ error: 'Құпия сөз немесе пайдаланушы аты қате' })
             }
 
-            const token = jwt.sign(
-                { id: user.id, username: user.username },
-                process.env.JSON_SECRET,
-                { expiresIn: '1h' }
-            )
+            const token = generateToken(user) // 🔥 Вот здесь вызываем утилиту
 
             res.status(200).json({
                 message: 'Кіру сәтті өтті',

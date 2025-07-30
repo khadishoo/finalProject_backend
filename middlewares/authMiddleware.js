@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-require('dotenv').config()  
+require('dotenv').config()
 
 function authMiddleware(req, res, next) {
     const authHeader = req.headers.authorization
@@ -12,10 +12,15 @@ function authMiddleware(req, res, next) {
 
     try {
         const decoded = jwt.verify(token, process.env.JSON_SECRET)
+
+        if (!decoded.id) {
+            return res.status(403).json({ error: 'Қате токен: пайдаланушы ID табылмады' })
+        }
+
         req.user = decoded
         next()
     } catch (e) {
-        return res.status(403).json({ error: e.message })       
+        return res.status(403).json({ error: 'Қате токен: ' + e.message })
     }
 }
 
