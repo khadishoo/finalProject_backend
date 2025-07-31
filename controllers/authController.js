@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const pool = require('../config/db')
-const generateToken = require('../utilits/generateToken') // убедись, что путь правильный
+const generateToken = require('../utilits/generateToken') 
 
 class AuthController {
     async register(req, res) {
@@ -58,7 +58,7 @@ class AuthController {
                 return res.status(401).json({ error: 'Құпия сөз немесе пайдаланушы аты қате' })
             }
 
-            const token = generateToken(user) // 🔥 Вот здесь вызываем утилиту
+            const token = generateToken(user) 
 
             res.status(200).json({
                 message: 'Кіру сәтті өтті',
