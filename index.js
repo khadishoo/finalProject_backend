@@ -7,6 +7,7 @@ const authRoutes = require('./routes/authRoutes')
 const userRoutes = require('./routes/userRoutes')
 const listingRoutes = require('./routes/listingRoutes')
 const bookingRoutes = require('./routes/bookingRoutes')
+const favoriteRoutes = require('./routes/favoriteRoutes')
 require('dotenv').config()
 
 const app = express()
@@ -25,6 +26,7 @@ app.use('/api', authRoutes)
 app.use('/api', userRoutes)
 app.use('/api', listingRoutes)
 app.use('/api', bookingRoutes)
+app.use('/api', favoriteRoutes)
 
 app.use('/uploads', express.static('uploads'))
 

@@ -26,8 +26,4 @@ router.post('/listings', auth, upload.single('image'), listingController.create)
 router.patch('/listings', auth, upload.single('image'), listingController.update)
 router.delete('/listings', auth, listingController.remove)
 
-router.get('/favorites', auth, listingController.getFavorites)
-router.post('/favorites', auth, listingController.addFavorite)
-router.delete('/favorites', auth, listingController.removeFavorite)
-
 module.exports = router
