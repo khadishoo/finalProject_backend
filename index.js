@@ -15,12 +15,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 const PORT = process.env.PORT || 3002
 
 app.use(cors({
-    origin: 'http://localhost:5173'
+    origin: 'https://finalproject-backend-5zu6.onrender.com'
 }))
 
 app.use(helmet())
 app.use(express.json())
-
 
 app.use('/api', authRoutes)
 app.use('/api', userRoutes)
