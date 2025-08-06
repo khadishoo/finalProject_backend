@@ -15,7 +15,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 const PORT = process.env.PORT || 3002
 
 app.use(cors({
-    origin: 'https://finalproject-backend-5zu6.onrender.com'
+    origin: ['http://localhost:5173', 'https://uniplaceapp.netlify.app'], 
+  credentials: true
 }))
 
 app.use(helmet())
